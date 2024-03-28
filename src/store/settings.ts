@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { DifficultyType } from '../Utils/Types';
+import { DifficultyType } from '../utils/Types';
 
 interface SettingsState {
   difficulty: DifficultyType;
