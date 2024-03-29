@@ -5,7 +5,8 @@ export const useGame = defineStore('game', {
   state: (): GameState => ({
     pairedCards: [],
     revealing: false,
-    lastFlippedCard: 0
+    lastFlippedCard: 0,
+    moves: 0
   }),
   getters: {},
   actions: {
@@ -13,9 +14,13 @@ export const useGame = defineStore('game', {
       this.pairedCards = []
       this.revealing = false
       this.lastFlippedCard = 0
+      this.moves = 0
     },
     addPairedCard(card: number) {
       this.pairedCards.push(card)
+    },
+    addMove(): void {
+      this.moves++
     },
     reveal() {
       this.revealing = true

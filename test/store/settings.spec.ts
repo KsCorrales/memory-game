@@ -13,14 +13,14 @@ describe('Settings store actions', () => {
     expect(store.sound).toBe(false)
     store.updateSoundSetting()
     expect(store.sound).toBe(true)
-  });
+  })
 
   it('addDifficulty should increment difficulty setting', () => {
-    const store = useSettings();
+    const store = useSettings()
     store.difficulty = 1
     store.addDifficulty()
     expect(store.difficulty).toBe(2)
-  });
+  })
 
   it('addDifficulty should restart difficulty value setting to 1 when it reaches 3', () => {
     const store = useSettings()

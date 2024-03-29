@@ -17,7 +17,6 @@ const isPaired = computed((): boolean => {
 watch(
   () => gameStore.revealing,
   (newVal, oldVal) => {
-    console.log('revealing changed', newVal, isPaired.value)
     if (newVal === false && oldVal === true && isPaired.value === false) {
       faceUp.value = false
     }

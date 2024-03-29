@@ -8,5 +8,6 @@ export interface SettingsState {
 export interface GameState {
   pairedCards: number[],
   revealing: boolean,
-  lastFlippedCard: number
+  lastFlippedCard: number,
+  moves: number
 }
