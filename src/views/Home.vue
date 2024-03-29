@@ -4,18 +4,22 @@ import { useSettings } from '../store/settings'
 const settingsStore = useSettings()
 </script>
 <template>
-  <div class="justify-center mb-12">
-    <h1 class="text-5xl">Memory Game</h1>
-  </div>
+  <div class="justify-center flex items-center h-screen">
+    <div class="relative">
+      <div class="justify-center mb-12">
+        <h1 class="text-5xl">Memory Game</h1>
+      </div>
 
-  <div class="grid grid-cols-1 gap-2">
-    <router-link custom :to="{ name: 'game' }" v-slot="{ navigate }">
-      <button class="menu-button" @click="navigate">Start</button>
-    </router-link>
+      <div class="grid grid-cols-1 gap-2">
+        <router-link custom :to="{ name: 'game' }" v-slot="{ navigate }">
+          <button class="menu-button" @click="navigate">Start</button>
+        </router-link>
 
-    <button class="menu-button" @click="settingsStore.addDifficulty">Difficulty: {{ settingsStore.difficultyName }}</button>
+        <button class="menu-button" @click="settingsStore.addDifficulty">Difficulty: {{ settingsStore.difficultyName }}</button>
 
-    <button class="menu-button" @click="settingsStore.updateSoundSetting">Sound: {{ settingsStore.soundName }}</button>
+        <button class="menu-button" @click="settingsStore.updateSoundSetting">Sound: {{ settingsStore.soundName }}</button>
+      </div>
+    </div>
   </div>
 </template>
 
