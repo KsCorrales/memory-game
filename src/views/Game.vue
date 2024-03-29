@@ -32,6 +32,7 @@ function shuffleCards(array: number[]): number[] {
 }
 
 function initGame(): void {
+  gameStore.restartGame()
   const shuffledCards = shuffleCards(generatePairs(settingsStore.cardsLength))
   cards.value = shuffledCards
 }
@@ -79,7 +80,7 @@ const gridCardClasses = computed(() => {
 <template>
   <div class="grid grid-cols-3 p-6">
     <div class="justify-center mb-12">
-      <h1 class="text-5xl">Game</h1>
+      <h1 class="text-5xl">Memory Game</h1>
       <p>Paired Cards: {{ gameStore.pairedCards }}</p>
     </div>
 

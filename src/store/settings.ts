@@ -1,10 +1,5 @@
 import { defineStore } from "pinia"
-import { DifficultyType } from '../utils/Types';
-
-interface SettingsState {
-  difficulty: DifficultyType;
-  sound: boolean;
-}
+import { SettingsState } from "../utils/Types";
 
 export const useSettings = defineStore('settings', {
   state: (): SettingsState => ({

@@ -9,7 +9,6 @@ const props = defineProps({
 
 const gameStore = useGame()
 const faceUp = ref(false)
-const flipping = ref(false)
 
 const isPaired = computed((): boolean => {
   return gameStore.pairedCards.includes(props.number)
@@ -26,20 +25,15 @@ watch(
 )
 
 function flipCard(): void {
-  if (!flipping.value && !gameStore.revealing && !isPaired.value) {
+  if (!gameStore.revealing && !isPaired.value) {
     faceUp.value = !faceUp.value
-    flipping.value = true
     emit('flippedCard', props.number)
   }
-}
-
-function animationEnd(): void {
-  flipping.value = false
 }
 </script>
 <template>
   <div class="flip-card" @click="flipCard">
-    <div :class="{ 'flip-card-inner': true, flip: faceUp }" @transitionend="animationEnd">
+    <div :class="{ 'flip-card-inner': true, flip: faceUp }">
       <div v-if="faceUp" class="custom-card-front bg-gray-300 rounded-md p-4 w-24 h-40 flex justify-center items-center cursor-pointer">
         <span class="custom-card-number" :class="{ 'rotate-number': faceUp }">{{ number }}</span>
       </div>
