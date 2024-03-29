@@ -7,7 +7,7 @@ const settingsStore = useSettings()
   <div class="justify-center flex items-center h-screen">
     <div class="relative">
       <div class="justify-center mb-12">
-        <h1 class="text-5xl">Memory Game</h1>
+        <h1 class="text-5xl text-white">Memory Game</h1>
       </div>
 
       <div class="grid grid-cols-1 gap-2">
