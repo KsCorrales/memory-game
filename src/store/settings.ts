@@ -1,19 +1,26 @@
 import { defineStore } from "pinia"
-import { DifficultyType } from '../utils/Types';
-
-interface SettingsState {
-  difficulty: DifficultyType;
-  sound: boolean;
-}
+import { SettingsState } from "../utils/Types";
 
 export const useSettings = defineStore('settings', {
-  state: () => ({
+  state: (): SettingsState => ({
     difficulty: 1,
     sound: false
   }),
 
   getters: {
     soundName: (state) => state.sound ? 'On' : 'Off',
+    cardsLength: (state) => {
+      switch (state.difficulty) {
+        case 1:
+          return 3 * 3
+        case 2:
+          return 4 * 4
+        case 3:
+          return 5 * 5
+        default:
+          return 3 * 3
+      }
+    },
     difficultyName: (state) => {
       switch (state.difficulty) {
         case 1:
@@ -29,11 +36,9 @@ export const useSettings = defineStore('settings', {
   },
   actions: {
     updateSoundSetting() {
-      console.log('updating... sound setting')
       this.sound = !this.sound
     },
     addDifficulty() {
-      console.log('adding... difficulty setting')
       if (this.difficulty >= 3) {
         this.difficulty = 1
       } else {
