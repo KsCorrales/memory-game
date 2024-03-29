@@ -1,30 +1,38 @@
 import { defineStore } from "pinia"
 import { GameState } from "@/utils/Types"
+import { useSound } from "@/composables/Sound"
+const sound = useSound()
 
 export const useGame = defineStore('game', {
   state: (): GameState => ({
     pairedCards: [],
-    revealing: false,
+    checkingPairs: false,
     lastFlippedCard: 0,
-    moves: 0
+    moves: 0,
+    reset: false,
+    checkingPairsTimeMs: 1000
   }),
   getters: {},
   actions: {
     restartGame(): void {
       this.pairedCards = []
-      this.revealing = false
+      this.checkingPairs = false
       this.lastFlippedCard = 0
       this.moves = 0
+      this.reset = true
     },
     addPairedCard(card: number) {
       this.pairedCards.push(card)
     },
     addMove(): void {
       this.moves++
+      this.reset = false
     },
-    reveal() {
-      this.revealing = true
-      setTimeout(() => { this.revealing = false }, 1000)
+    checkPairs() {
+      this.checkingPairs = true
+      setTimeout(() => {
+        this.checkingPairs = false
+      }, this.checkingPairsTimeMs)
     }
   },
 })

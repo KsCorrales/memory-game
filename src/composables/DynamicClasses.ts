@@ -1,8 +1,6 @@
 import { useGameInit } from "./GameInit";
 import { computed } from "vue";
 
-
-
 export function useDynamicClasses() {
   const { settingsStore } = useGameInit()
 

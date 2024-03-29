@@ -2,26 +2,55 @@ import { ref } from 'vue'
 import { useGame } from '../store/game'
 import { useSettings } from '../store/settings'
 import { useTimer } from './Timer'
+import { useSound } from '../composables/Sound'
 
 export function useGameInit() {
   const gameStore = useGame()
   const settingsStore = useSettings()
-  const { resetTimer, stopTimer, formattedTime } = useTimer()
+  const sound = useSound()
+  const { resetTimer, stopTimer, formattedTime, timeInSeconds } = useTimer()
 
   const cards = ref<number[]>([])
 
+  function resetCards(): void {
+    cards.value = [];
+  };
+
   function flippedCard(cardNumber: number): void {
     gameStore.addMove()
+    if (settingsStore.sound) {
+      sound.playFlipCard()
+    }
+
     if (gameStore.lastFlippedCard !== 0) {
       if (cardNumber === gameStore.lastFlippedCard) {
-        gameStore.addPairedCard(cardNumber)
-        gameStore.lastFlippedCard = 0
+        pairedCard(cardNumber)
       } else if (cardNumber !== gameStore.lastFlippedCard) {
-        gameStore.lastFlippedCard = 0
+        unpairedCard(cardNumber)
       }
-      gameStore.reveal()
+      gameStore.checkPairs()
     } else {
       gameStore.lastFlippedCard = cardNumber
+    }
+  }
+
+  function pairedCard(cardNumber: number): void {
+    gameStore.addPairedCard(cardNumber)
+    gameStore.lastFlippedCard = 0
+    if (settingsStore.sound) {
+      setTimeout(() => {
+        sound.playPairedCards()
+      }, gameStore.checkingPairsTimeMs)
+    }
+
+  }
+
+  function unpairedCard(cardNumber: number): void {
+    gameStore.lastFlippedCard = 0
+    if (settingsStore.sound) {
+      setTimeout(() => {
+        sound.playDownFaceFlipCard()
+      }, gameStore.checkingPairsTimeMs)
     }
   }
 
@@ -48,6 +77,7 @@ export function useGameInit() {
   }
 
   function initGame(): void {
+    resetCards()
     gameStore.restartGame()
     const shuffledCards = shuffleCards(generatePairs(settingsStore.cardsLength))
     cards.value = shuffledCards
@@ -62,6 +92,7 @@ export function useGameInit() {
     settingsStore,
     stopTimer,
     resetTimer,
-    formattedTime
+    formattedTime,
+    timeInSeconds
   }
 }
