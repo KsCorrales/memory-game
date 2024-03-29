@@ -15,7 +15,16 @@ const isPaired = computed((): boolean => {
 })
 
 watch(
-  () => gameStore.revealing,
+  () => gameStore.reset,
+  (newVal) => {
+    if (newVal === true) {
+      faceUp.value = false
+    }
+  },
+)
+
+watch(
+  () => gameStore.checkingPairs,
   (newVal, oldVal) => {
     if (newVal === false && oldVal === true && isPaired.value === false) {
       faceUp.value = false
@@ -24,7 +33,7 @@ watch(
 )
 
 function flipCard(): void {
-  if (!gameStore.revealing && !isPaired.value) {
+  if (!gameStore.checkingPairs && !isPaired.value && faceUp.value === false) {
     faceUp.value = !faceUp.value
     emit('flippedCard', props.number)
   }

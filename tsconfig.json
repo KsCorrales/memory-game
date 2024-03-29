@@ -10,6 +10,10 @@
   },
   "include": [
     "src/**/*",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "src/assets/sounds"
+  ],
+  "types": [
+    "sound"
   ]
 }

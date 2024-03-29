@@ -32,6 +32,7 @@ export function useTimer() {
   });
 
   return {
+    timeInSeconds,
     formattedTime,
     startTimer,
     resetTimer,
