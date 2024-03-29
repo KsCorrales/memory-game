@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? 'https://kscorrales.github.io/memory-game' : '/',
+  base: process.env.NODE_ENV === 'production' ? 'https://kscorrales.github.io/memory-game/' : './',
   plugins: [
     vue(),
   ],
