@@ -146,8 +146,8 @@ function flipCard(): void {
 @media (max-width: 1023px) {
   .custom-card-back,
   .custom-card-front {
-    width: 90px;
-    height: 180px;
+    width: 70px;
+    height: 140px;
   }
 }
 </style>
