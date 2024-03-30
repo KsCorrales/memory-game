@@ -10,9 +10,9 @@ describe('Settings store actions', () => {
 
   it('updateSoundSetting should toggle sound setting', () => {
     const store = useSettings()
-    expect(store.sound).toBe(false)
-    store.updateSoundSetting()
     expect(store.sound).toBe(true)
+    store.updateSoundSetting()
+    expect(store.sound).toBe(false)
   })
 
   it('addDifficulty should increment difficulty setting', () => {
