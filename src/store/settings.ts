@@ -4,10 +4,14 @@ import { SettingsState } from "../utils/Types";
 export const useSettings = defineStore('settings', {
   state: (): SettingsState => ({
     difficulty: 1,
-    sound: false
+    sound: true,
+    name: ''
   }),
 
   getters: {
+    getName: (state): string => {
+      return state.name;
+    },
     soundName: (state) => state.sound ? 'On' : 'Off',
     cardsLength: (state) => {
       switch (state.difficulty) {
@@ -35,6 +39,9 @@ export const useSettings = defineStore('settings', {
     }
   },
   actions: {
+    setName(name: string) {
+      this.name = name;
+    },
     updateSoundSetting() {
       this.sound = !this.sound
     },

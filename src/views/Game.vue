@@ -3,9 +3,12 @@ import { computed, onMounted, watch } from 'vue'
 import Card from '../components/Card.vue'
 import { useGameInit } from '../composables/GameInit'
 import { useDynamicClasses } from '../composables/DynamicClasses'
+import { LeaderboardRecord } from '@/utils/Types'
+import { useLeaderBoardStore } from '@/store/leaderBoard'
 
 const { cards, gameStore, flippedCard, initGame, stopTimer, formattedTime, settingsStore, timeInSeconds } = useGameInit()
 const { gameBoardClasses, gridCardClasses } = useDynamicClasses()
+const leaderboardStore = useLeaderBoardStore()
 
 const youWin = computed(() => {
   return cards.value.length === gameStore.pairedCards.length * 2
@@ -20,13 +23,13 @@ function calculateScore() {
     3: 60,
   }
 
-  if (timeInSeconds.value < minTimeByDifficulty[settingsStore.difficulty] || gameStore.moves === minMovesToWin) {
+  if (timeInSeconds.value <= minTimeByDifficulty[settingsStore.difficulty] || gameStore.moves === minMovesToWin) {
     // if resolve before 10 seconds
     return 5
-  } else if (timeInSeconds.value > minTimeByDifficulty[settingsStore.difficulty] && gameStore.moves < minMovesToWin * 1.5) {
+  } else if (timeInSeconds.value >= minTimeByDifficulty[settingsStore.difficulty] && gameStore.moves < minMovesToWin * 1.5) {
     // if passes 15 secs but user uses less than 50% more min moves
     return 4
-  } else if (gameStore.moves >= minMovesToWin * 1.5) {
+  } else if (timeInSeconds.value > minTimeByDifficulty[settingsStore.difficulty] && gameStore.moves >= minMovesToWin * 1.5) {
     // if passes more than the 50% more of the
     return 3
   } else {
@@ -39,10 +42,23 @@ watch(
   () => youWin.value,
   (newVal) => {
     if (newVal) {
-      stopTimer()
+      gameOver()
     }
   },
 )
+
+function gameOver() {
+  stopTimer()
+  const record: LeaderboardRecord = {
+    moves: gameStore.moves,
+    time: timeInSeconds.value,
+    difficulty: settingsStore.difficulty,
+    name: settingsStore.name,
+  }
+
+  console.log('GAME OVER, STORING DATA', record)
+  leaderboardStore.addLocalStorageLeaderBoard(record)
+}
 
 onMounted(() => {
   initGame()
