@@ -65,9 +65,9 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div class="grid grid-cols-3 p-6">
-    <div class="grid grid-cols-4">
-      <div class="justify-center mb-12 col-span-3">
+  <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 p-6">
+    <div class="grid grid-cols-1 lg:grid-cols-4">
+      <div class="justify-center mb-12 lg:col-span-3">
         <div class="grid grid-cols-1 gap-2 rounded-xl bg-yellow-200 text-gray-800 p-4 shadow-md">
           <h1 class="text-3xl font-bold mb-4 text-center">Memory Game: {{ settingsStore.difficultyName }}</h1>
           <div class="flex gap-4">
@@ -79,9 +79,9 @@ onMounted(() => {
               <span class="text-2xl font-bold">{{ formattedTime }}</span>
               <span class="text-xs font-bold uppercase">Time</span>
             </div>
-            <div class="flex-1 hidden lg:flex flex-col items-center p-2">
+            <div class="flex flex-1 lg:flex flex-col items-center p-2">
               <span class="text-2xl font-bold">{{ gameStore.pairedCards.length }}</span>
-              <span class="text-xs font-bold uppercase">Paired Cards</span>
+              <span class="text-xs font-bold uppercase">Paired</span>
             </div>
           </div>
           <div v-if="youWin" class="bg-gray-300 mt-4 p-2 rounded-lg">
