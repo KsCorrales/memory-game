@@ -142,4 +142,12 @@ function flipCard(): void {
 .rotate-number {
   transform: rotateY(180deg) translate(50%, -50%);
 }
+
+@media (max-width: 1023px) {
+  .custom-card-back,
+  .custom-card-front {
+    width: 90px;
+    height: 180px;
+  }
+}
 </style>

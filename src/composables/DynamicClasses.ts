@@ -9,7 +9,7 @@ export function useDynamicClasses() {
       case 3:
         return 'flex justify-center items-center col-span-2'
       case 1:
-        return 'flex h-screen justify-center items-center'
+        return 'flex lg:h-screen justify-center items-center'
       default:
         return 'flex justify-center items-center'
     }
@@ -18,7 +18,7 @@ export function useDynamicClasses() {
   const gridCardClasses = computed(() => {
     switch (settingsStore.difficulty) {
       case 3:
-        return 'grid grid-rows-4 grid-flow-col gap-4'
+        return 'grid grid-cols-4 gap-6 lg:grid-rows-4 lg:grid-flow-col lg:gap-4'
       case 2:
         return 'grid grid-rows-4 grid-flow-col gap-4'
       default:
