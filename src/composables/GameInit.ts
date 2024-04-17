@@ -77,6 +77,8 @@ export function useGameInit() {
     initGame,
     gameOver,
     formattedTime,
-    timeInSeconds
+    timeInSeconds,
+    pairedCard,
+    unpairedCard
   }
 }
