@@ -4,12 +4,11 @@ import Card from '../components/Card.vue'
 import ScoreBoard from '../components/ScoreBoard.vue'
 import { useGameInit } from '../composables/GameInit'
 import { useDynamicClasses } from '../composables/DynamicClasses'
-import { LeaderboardRecord } from '@/utils/Types'
-import { useLeaderBoardStore } from '@/store/leaderBoard'
+import { useGame } from '@/store/game'
 
-const { cards, formattedTime, gameStore, flippedCard, initGame, stopTimer, settingsStore, timeInSeconds } = useGameInit()
 const { gameBoardClasses, gridCardClasses } = useDynamicClasses()
-const leaderboardStore = useLeaderBoardStore()
+const { cards, formattedTime, flippedCard, initGame, gameOver, timeInSeconds } = useGameInit()
+const gameStore = useGame()
 
 const youWin = computed(() => {
   return cards.value.length === gameStore.pairedCards.length * 2
@@ -23,18 +22,6 @@ watch(
     }
   },
 )
-
-function gameOver() {
-  stopTimer()
-  const record: LeaderboardRecord = {
-    moves: gameStore.moves,
-    time: timeInSeconds.value,
-    difficulty: settingsStore.difficulty,
-    name: settingsStore.name,
-  }
-
-  leaderboardStore.addLocalStorageLeaderBoard(record)
-}
 
 onMounted(() => {
   initGame()

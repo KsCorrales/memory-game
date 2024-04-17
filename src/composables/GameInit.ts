@@ -1,20 +1,19 @@
-import { ref } from 'vue'
 import { useGame } from '../store/game'
 import { useSettings } from '../store/settings'
 import { useTimer } from './Timer'
 import { useSound } from '../composables/Sound'
+import { useCards } from './Cards'
+import { LeaderboardRecord } from '@/utils/Types'
+import { useLeaderBoardStore } from '@/store/leaderBoard'
 
 export function useGameInit() {
-  const gameStore = useGame()
-  const settingsStore = useSettings()
+  const { cards, setCardsValue, resetCards, generatePairsOfCards, shuffleCards } = useCards()
   const sound = useSound()
   const { resetTimer, stopTimer, formattedTime, timeInSeconds } = useTimer()
 
-  const cards = ref<number[]>([])
-
-  function resetCards(): void {
-    cards.value = [];
-  };
+  const gameStore = useGame()
+  const settingsStore = useSettings()
+  const leaderboardStore = useLeaderBoardStore()
 
   function flippedCard(cardNumber: number): void {
     gameStore.addMove()
@@ -26,7 +25,7 @@ export function useGameInit() {
       if (cardNumber === gameStore.lastFlippedCard) {
         pairedCard(cardNumber)
       } else if (cardNumber !== gameStore.lastFlippedCard) {
-        unpairedCard(cardNumber)
+        unpairedCard()
       }
       gameStore.checkPairs()
     } else {
@@ -42,10 +41,9 @@ export function useGameInit() {
         sound.playPairedCards()
       }, gameStore.checkingPairsTimeMs)
     }
-
   }
 
-  function unpairedCard(cardNumber: number): void {
+  function unpairedCard(): void {
     gameStore.lastFlippedCard = 0
     if (settingsStore.sound) {
       setTimeout(() => {
@@ -54,33 +52,22 @@ export function useGameInit() {
     }
   }
 
-  function generatePairs(cardsNumber: number): number[] {
-    let pairs: number[] = []
-
-    for (let n = 1; n <= cardsNumber / 2; n++) {
-      pairs.push(n, n)
+  function gameOver() {
+    stopTimer()
+    const record: LeaderboardRecord = {
+      moves: gameStore.moves,
+      time: timeInSeconds.value,
+      difficulty: settingsStore.difficulty,
+      name: settingsStore.name || 'John Doe',
     }
 
-    return pairs
-  }
-
-  function shuffleCards(array: number[]): number[] {
-    let currentIndex = array.length
-
-    while (currentIndex != 0) {
-      let randomIndex = Math.floor(Math.random() * currentIndex)
-      currentIndex--
-        ;[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
-    }
-
-    return array
+    leaderboardStore.addLocalStorageLeaderBoard(record)
   }
 
   function initGame(): void {
     resetCards()
     gameStore.restartGame()
-    const shuffledCards = shuffleCards(generatePairs(settingsStore.cardsLength))
-    cards.value = shuffledCards
+    setCardsValue(shuffleCards(generatePairsOfCards(settingsStore.cardsLength)))
     resetTimer()
   }
 
@@ -88,10 +75,7 @@ export function useGameInit() {
     cards,
     flippedCard,
     initGame,
-    gameStore,
-    settingsStore,
-    stopTimer,
-    resetTimer,
+    gameOver,
     formattedTime,
     timeInSeconds
   }
