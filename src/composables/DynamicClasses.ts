@@ -1,8 +1,8 @@
-import { useGameInit } from "./GameInit";
 import { computed } from "vue";
+import { useSettings } from "@/store/settings";
 
 export function useDynamicClasses() {
-  const { settingsStore } = useGameInit()
+  const settingsStore = useSettings()
 
   const gameBoardClasses = computed(() => {
     switch (settingsStore.difficulty) {
